@@ -7,13 +7,17 @@
     "build": "remix build",
     "dev": "remix dev --manual",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "drizzle:generate": "drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=app/drizzle/schema.ts",
+    "drizzle:push": "drizzle-kit push:sqlite"
   },
   "dependencies": {
+    "@libsql/client": "^0.4.0-pre.5",
     "@remix-run/css-bundle": "^2.3.1",
     "@remix-run/node": "^2.3.1",
     "@remix-run/react": "^2.3.1",
     "@remix-run/serve": "^2.3.1",
+    "drizzle-orm": "^0.29.1",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,7 +29,9 @@
     "@remix-run/eslint-config": "^2.3.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "drizzle-kit": "^0.20.6",
     "eslint": "^8.38.0",
+    "tsx": "^4.6.2",
     "typescript": "^5.1.6"
   },
   "engines": {
