@@ -1,5 +1,5 @@
 import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { drizzle } from "drizzle-orm/libsql";
 
 const url = process.env.TURSO_URL;
 if (!url) {
