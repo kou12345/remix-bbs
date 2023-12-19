@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { db } from "~/drizzle/config.server";
 import { users } from "~/drizzle/schema";
