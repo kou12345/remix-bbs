@@ -91,8 +91,8 @@ export default function PostsIndex() {
         {posts.map((post: Post) => (
           <li key={post.id}>
             <p>{post.content}</p>
-            <p>{post.userName}</p>
-            <p>{post.createdAt}</p>
+            <p>投稿者： {post.userName}</p>
+            <p>投稿日時： {post.createdAt}</p>
           </li>
         ))}
       </ul>
