@@ -57,22 +57,42 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const content = String(formData.get("content"));
-  console.log(content);
+  const actionType = String(formData.get("actionType"));
 
-  try {
-    const result = await db.insert(posts).values({
-      content: content,
-      user_id: 1,
-    });
+  switch (actionType) {
+    case "create":
+      const content = String(formData.get("content"));
+      console.log(content);
 
-    console.log(result);
+      try {
+        const result = await db.insert(posts).values({
+          content: content,
+          user_id: 1,
+        });
 
-    return json({ message: "success" });
-  } catch (error) {
-    console.log(error);
+        console.log(result);
+
+        return json({ message: "success" });
+      } catch (error) {
+        console.log(error);
+      }
+      return null;
+    case "delete":
+      const postId = Number(formData.get("postId"));
+      console.log(postId);
+
+      try {
+        const result = await db.delete(posts).where(eq(posts.id, postId));
+        console.log(result);
+
+        return json({ message: "success" });
+      } catch (error) {
+        console.log(error);
+      }
+      return null;
+    default:
+      return null;
   }
-  return null;
 }
 
 export default function PostsIndex() {
@@ -83,6 +103,7 @@ export default function PostsIndex() {
       <div>投稿一覧</div>
       <Form method="post">
         <input type="text" name="content" required />
+        <input type="hidden" name="actionType" value="create" />
         <button type="submit">投稿</button>
       </Form>
       <hr />
@@ -93,6 +114,12 @@ export default function PostsIndex() {
             <p>{post.content}</p>
             <p>投稿者： {post.userName}</p>
             <p>投稿日時： {post.createdAt}</p>
+            {/* 削除ボタン */}
+            <Form method="post">
+              <input type="hidden" name="postId" value={post.id} />
+              <input type="hidden" name="actionType" value="delete" />
+              <button type="submit">Delete</button>
+            </Form>
           </li>
         ))}
       </ul>
