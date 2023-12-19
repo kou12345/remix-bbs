@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "~/drizzle/config.server";
 import { likes, posts, users } from "~/drizzle/schema";
 import { authenticator } from "~/services/auth.server";
+import { getSession } from "~/services/session.server";
 
 type Post = {
   id: number;
@@ -56,6 +57,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  const session = await getSession(request.headers.get("cookie"));
+  console.log("session: ", session.data);
   const formData = await request.formData();
   const actionType = String(formData.get("actionType"));
 
@@ -67,7 +70,7 @@ export async function action({ request }: ActionFunctionArgs) {
       try {
         const result = await db.insert(posts).values({
           content: content,
-          user_id: 1,
+          user_id: session.data.user,
         });
 
         console.log(result);
@@ -97,7 +100,7 @@ export async function action({ request }: ActionFunctionArgs) {
       try {
         const result = await db.insert(likes).values({
           post_id: likePostId,
-          user_id: 1,
+          user_id: session.data.user,
         });
         console.log(result);
 
