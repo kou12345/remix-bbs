@@ -23,3 +23,5 @@ CREATE TABLE `users` (
 	`created_at` text DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` text DEFAULT CURRENT_TIMESTAMP
 );
+--> statement-breakpoint
+CREATE UNIQUE INDEX `users_name_unique` ON `users` (`name`);

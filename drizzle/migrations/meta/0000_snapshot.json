@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "9dfedc21-2fbd-4056-b757-1ca110d21371",
+  "id": "7c356eb3-c5ce-4010-8c40-beab06bd439e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "likes": {
@@ -171,7 +171,15 @@
           "default": "CURRENT_TIMESTAMP"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_name_unique": {
+          "name": "users_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
