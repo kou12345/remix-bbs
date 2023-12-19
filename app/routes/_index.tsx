@@ -40,7 +40,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const result = await db.select().from(users);
   console.log(result);
   return await authenticator.authenticate("user-login", request, {
-    successRedirect: "success",
+    successRedirect: "posts",
     failureRedirect: "/",
   });
 }
