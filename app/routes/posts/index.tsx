@@ -2,7 +2,7 @@ import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-r
 import { Form, useLoaderData } from "@remix-run/react";
 import { eq } from "drizzle-orm";
 import { db } from "~/drizzle/config.server";
-import { posts, users } from "~/drizzle/schema";
+import { likes, posts, users } from "~/drizzle/schema";
 import { authenticator } from "~/services/auth.server";
 
 type Post = {
@@ -90,6 +90,23 @@ export async function action({ request }: ActionFunctionArgs) {
         console.log(error);
       }
       return null;
+    case "like":
+      const likePostId = Number(formData.get("postId"));
+      console.log(likePostId);
+
+      try {
+        const result = await db.insert(likes).values({
+          post_id: likePostId,
+          user_id: 1,
+        });
+        console.log(result);
+
+        return json({ message: "success" });
+      } catch (error) {
+        console.log(error);
+      }
+      return null;
+
     default:
       return null;
   }
@@ -114,12 +131,20 @@ export default function PostsIndex() {
             <p>{post.content}</p>
             <p>投稿者： {post.userName}</p>
             <p>投稿日時： {post.createdAt}</p>
-            {/* 削除ボタン */}
-            <Form method="post">
-              <input type="hidden" name="postId" value={post.id} />
-              <input type="hidden" name="actionType" value="delete" />
-              <button type="submit">Delete</button>
-            </Form>
+            <div>
+              {/* 削除ボタン */}
+              <Form method="post">
+                <input type="hidden" name="postId" value={post.id} />
+                <input type="hidden" name="actionType" value="delete" />
+                <button type="submit">Delete</button>
+              </Form>
+              {/* いいねボタン */}
+              <Form method="post">
+                <input type="hidden" name="postId" value={post.id} />
+                <input type="hidden" name="actionType" value="like" />
+                <button type="submit">Like</button>
+              </Form>
+            </div>
           </li>
         ))}
       </ul>
